@@ -1,0 +1,28 @@
+{
+  "name": "dnd-exchange-rate",
+  "version": "0.0.1",
+  "description": "dungeons and dragons 5e exchange rate calculator",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "./node_modules/mocha/bin/mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stephthedev/dnd-exchange-rate.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stephthedev/dnd-exchange-rate/issues"
+  },
+  "homepage": "https://github.com/stephthedev/dnd-exchange-rate#readme",
+  "devDependencies": {
+    "mocha": "^4.0.1"
+  },
+  "dependencies": {
+    "config": "^1.27.0",
+    "express": "^4.16.2",
+    "pug": "^2.0.0-rc.4"
+  }
+}

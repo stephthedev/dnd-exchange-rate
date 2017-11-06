@@ -1,0 +1,41 @@
+extends layout.pug
+
+block content
+	div.container.m-2
+		div.row.m-2
+			div.col-lg-12
+				- if (result.length > 0)
+					div.alert.alert-info
+						=result
+
+		div.row
+			div.col-lg-6
+				form.form-horizontal(method="GET" action="/")
+					div.form-group.row
+						label.col-sm-3 Copper
+						input.form-control.col-sm-9(type="number" name="cp" value=cp)
+					div.form-group.row
+						label.col-sm-3 Silver
+						input.form-control.col-sm-9(type="number" name="sp" value=sp)
+					div.form-group.row
+						label.col-sm-3 Electrum
+						input.form-control.col-sm-9(type="number" name="ep" value=ep)
+					div.form-group.row
+						label.col-sm-3 Gold
+						input.form-control.col-sm-9(type="number" name="gp" value=gp)
+					div.form-group.row
+						label.col-sm-3 Platinum
+						input.form-control.col-sm-9(type="number" name="pp" value=pp)
+					button.btn.btn-primary(type="submit") Submit
+			div.col-lg-6
+				div.card
+					div.card-header Instructions
+					div.card-body Use this calculator to optimize lower value coins to higher value coins. For instance, convert
+						p 308cp, 702sp, 12ep, 98gp, and 30 pp
+						p into
+						p 8cp, 2sp, 24gp, and 39pp.
+
+		div.row
+			include includes/rates.pug
+
+
