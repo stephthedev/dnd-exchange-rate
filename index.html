@@ -31,59 +31,83 @@ layout: default
                     <input class="form-control" type="tel" id="pp" name="pp"></input>
                 </div>
 
+                <div class="form-group">
+                    <label for="partySize">Team Size</label>
+                    <input class="form-control" type="tel" id="partySize" name="partySize"></input>
+                </div>
+
                 <button class="btn btn-primary" type="submit">Submit</button>
             </form>
         </div>
 
         <div class="col-lg-6 align-self-center">
-            <div id="result" class="alert alert-info invisible"></div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">Instructions</div>
-                <div class="card-body">TBD</div>
+            <div id="result" class="alert alert-info invisible">
+                <h5>Results</h5>
+                <span id="placeholder"></span>
             </div>
         </div>
     </div>
 
     <div class="row">
         <div class="col-md-12">
-            TBD: Include exchange table
+            {% include instructions.html %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            {% include rates.html %}
         </div>
     </div>
 
     <script type="text/javascript">
-        function calculate() {
-            //1. Get the coin values from the form
-            var cp = document.getElementById("cp").value;
-            var sp = document.getElementById("sp").value;
-            var ep = document.getElementById("ep").value;
-            var gp = document.getElementById("gp").value;
-            var pp = document.getElementById("pp").value;
+        function toInteger(number, defaultValue) {
+            return !isNaN(number) ? parseInt(number) : defaultValue;
+        }
 
-            //2. Get the optimal results
-            var results = ExchangeRate.optimalExchange({
-                cp: cp,
-                sp: sp,
-                ep: ep,
-                gp: gp,
-                pp: pp
-            });
-
-            //3. Create a human-readable string showcasing the results
-            var result = "";
+        function toCoinStr(results) {
+            var str = "";
             for (var key in results) {
                 if (results[key] > 0) {
-                    result = result.concat(results[key] + key + " ");
+                    str = str.concat(results[key] + key + " ");
                 }
             }
+            return str;
+        }
 
+        function calculate() {
+            //1. Get the coin values from the form
+            var coinOpts = {
+                cp: document.getElementById("cp").value,
+                sp: document.getElementById("sp").value,
+                ep: document.getElementById("ep").value,
+                gp: document.getElementById("gp").value,
+                pp: document.getElementById("pp").value
+            }   
+            var partySize = toInteger(document.getElementById("partySize").value, -1);
+
+            var result = "";
+            if (partySize > -1) {
+                var results = ExchangeRate.teamSplit(partySize, coinOpts);
+                result = "<ul>"
+                for (var i=0; i<results.length; i++) {
+                    result = result.concat("<li>", toCoinStr(results[i]), "</li>");
+                }
+                result = result.concat("</ul>");
+            } else {
+                //2. Get the optimal results
+                var results = ExchangeRate.optimalExchange(coinOpts);
+
+                //3. Create a human-readable string showcasing the results
+                result = result.concat(toCoinStr(results));
+            }
+
+            //Unhide the result
             var resultDiv = document.getElementById("result");
-            resultDiv.innerText = result;
             resultDiv.classList.remove("invisible");
+
+            var placeholder = document.getElementById("placeholder");
+            placeholder.innerHTML = result;
             return false;
         }
     </script>

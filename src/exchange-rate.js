@@ -5,6 +5,18 @@ var ExchangeRate = (function () {
   		return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
 	};
 
+	var scrubCoinOpts = function(coinOpts) {
+		var scrubbedCoinOpts = {};
+		for (var coin in coinOpts) {
+			if (isInt(coinOpts[coin])) {
+				scrubbedCoinOpts[coin] = parseInt(coinOpts[coin]);
+			} else {
+				scrubbedCoinOpts[coin] = 0;
+			}
+		}
+		return scrubbedCoinOpts;
+	}
+
 	var getDenominatorFromRate = function(label) {
 		if (label.includes("/")) {
 			return parseInt(label.split("/")[1]);
@@ -12,7 +24,7 @@ var ExchangeRate = (function () {
 			return 1;
 		}
 		
-	}
+	};
 
 	var calculateCoin = function(toCoinType, fromCoinAmount, fromCoinType) {
 		var coinRate = config.get("Client.coin." + fromCoinType + "." + toCoinType + ".rate");
@@ -62,59 +74,62 @@ var ExchangeRate = (function () {
 			return [optimalExchange(coinOpts)];
 		} 
 
-		//Init the coins by member
+		//1. Create a collection of all-zero results for all party members
 		var coinsByMember = [];
 		for (var i=0; i<partyMemCount; i++) {
-			coinsByMember.push({});
+			var allZeroCoins = {};
+			for (var coin in config.get("Client.coin")) {
+				allZeroCoins[coin] = 0;
+			}
+			coinsByMember.push(allZeroCoins);
 		}
 
-		var results = coinOpts;
+		//2. Scrub the coins so that it's all numbers
+		var scrubbedCoinOpts = scrubCoinOpts(coinOpts);
 
-		//The config file is in order from greatest to least
 		var remainingCoinAmount = 0;
 		var remainingCoinType = null;
 		for (var coin in config.get("Client.coin")) {
-			if (!results.hasOwnProperty(coin)) {
-				results[coin] = 0;
-			}
-
 			//Take any remaining coins and either 
 			//A. exchange it to a lower coin value or
 			//B. add any remaining coppers for further processing
 			if (remainingCoinAmount > 0) {
-				if (coin !== remainingCoinType) {
+				if (remainingCoinType === "cp") {
+					scrubbedCoinOpts[coin] += remainingCoinAmount;
+				} else if (coin !== remainingCoinType) {
 					var convertedValue = calculateCoin(coin, remainingCoinAmount, remainingCoinType);
-					results[coin] += convertedValue;
-				} else if (coin === "cp") {
-					results[coin] += remainingCoinAmount; 
+					scrubbedCoinOpts[coin] += convertedValue;
 				}
 			}
 
-			//Get the coins that evenly distribute
-			var evenCoins = Math.floor(results[coin] / partyMemCount);
-
-			//Get the coins that don't
-			remainingCoinAmount = results[coin] % partyMemCount;
-			remainingCoinType = coin;
-
-			//Set those coins that evenly distribute
+			//Get the coins that evenly distribute and it to the results list
+			var wholeCoins = Math.floor(scrubbedCoinOpts[coin] / partyMemCount);
 			for (var i=0; i<partyMemCount; i++) {
-				coinsByMember[i][coin] = evenCoins;
+				coinsByMember[i][coin] += wholeCoins;
 			}
 
-			//Set any remaining coins that don't
+			//Get the leftover coins that don't evenly distribute
+			remainingCoinAmount = scrubbedCoinOpts[coin] % partyMemCount;
+			remainingCoinType = coin;
+
+			//Add any remaining coppers that don't evenly distribute
 			if (remainingCoinType === "cp" && remainingCoinAmount > 0) {
 				for (var i=0; i<remainingCoinAmount; i++) {
 					coinsByMember[i][remainingCoinType] += 1;
 				}
 			}
 		}
+
+		//Optimize the remaining values
+		for (var i=0; i<coinsByMember.length; i++) {
+			coinsByMember[i] = optimalExchange(coinsByMember[i]);
+		}
 		return coinsByMember;
 	};
   
 	return {
-  	optimalExchange : optimalExchange,
-  	teamSplit : teamSplit
+  		optimalExchange : optimalExchange,
+  		teamSplit : teamSplit
 	};
 
 })();
