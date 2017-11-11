@@ -2,46 +2,46 @@
 layout: default
 ---
 
-<div class="container m-2">
-    <div class="row m-2">
-        <div class="col-lg-12">
+<div class="container">
+    <div class="row mt-2">
+        <div class="col-lg-6 mb-2">
+            <form class="form-horizontal" onsubmit="return calculate();" onkeyup="return calculate();">
+                <div class="form-group mr-1">
+                    <label for="id">Copper</label>
+                    <input class="form-control" type="tel" id="cp" name="cp"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="sp">Silver</label>
+                    <input class="form-control" type="tel" id="sp" name="sp"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="ep">Electrum</label>
+                    <input class="form-control" type="tel" id="ep" name="ep"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="gp">Gold</label>
+                    <input class="form-control" type="tel" id="gp" name="gp"></input>
+                </div>
+
+                <div class="form-group">
+                    <label for="pp">Platinum</label>
+                    <input class="form-control" type="tel" id="pp" name="pp"></input>
+                </div>
+
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+        </div>
+
+        <div class="col-lg-6 align-self-center">
             <div id="result" class="alert alert-info invisible"></div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-lg-6">
-            <form class="form-horizontal mx-4" onsubmit="return calculate();">
-                <div class="form-group row">
-                    <label class="col-sm-3">Copper</label>
-                    <input class="form-control col-sm-9" type="number" id="cp" name="cp"></input>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-3">Silver</label>
-                    <input class="form-control col-sm-9" type="number" id="sp" name="sp"></input>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-3">Electrum</label>
-                    <input class="form-control col-sm-9" type="number" id="ep" name="ep"></input>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-3">Gold</label>
-                    <input class="form-control col-sm-9" type="number" id="gp" name="gp"></input>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-sm-3">Platinum</label>
-                    <input class="form-control col-sm-9" type="number" id="pp" name="pp"></input>
-                </div>
-
-                <button class="btn btn-primary" type="submit">Optimize</button>
-            </form>
-        </div>
-
-        <div class="col-lg-6">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">Instructions</div>
                 <div class="card-body">TBD</div>
@@ -50,7 +50,9 @@ layout: default
     </div>
 
     <div class="row">
-        TBD: Include exchange table
+        <div class="col-md-12">
+            TBD: Include exchange table
+        </div>
     </div>
 
     <script type="text/javascript">
