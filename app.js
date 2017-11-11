@@ -11,13 +11,23 @@ app.set('port', (process.env.PORT || 3000));
 app.set('view engine', 'pug');
 
 app.get('/', function(req, res) {
-	var cp = req.query.cp;
-	var sp = req.query.sp;
-	var ep = req.query.ep;
-	var gp = req.query.gp;
-	var pp = req.query.pp;
+	//1. Get the coin values from the form
+	var coinOpts = {};
+	for (var coin in config.get("coin")) {
+		if (req.query.hasOwnProperty(coin)) {
+			coinOpts[coin] = req.query[coin];
+		}
+	}
 
-	var results = ER.optimalExchange(cp, sp, ep, gp, pp);
+	//2. Get the optimal results
+	var results = {};
+	if (parseInt(req.query.teamSize) > 0) {
+		results = ER.teamSplit(req.query.teamSize, coinOpts);
+	} else {
+		results = ER.optimalExchange(coinOpts);	
+	}
+
+	//3. Create a human-readable string showcasing the results
 	var result = "";
 	for (var key in results) {
 		if (results[key] > 0) {
@@ -27,11 +37,7 @@ app.get('/', function(req, res) {
 
 	res.render("calculator", {
 		coins:  config.get("coin"),
-		cp: cp,
-		sp: sp,
-		ep: ep,
-		gp: gp,
-		pp: pp,
+		coinOpts: coinOpts,
 		result: result
 	});
 });

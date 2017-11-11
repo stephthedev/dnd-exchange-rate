@@ -14,61 +14,108 @@ var ExchangeRate = (function () {
 		
 	}
 
-	var calculateCoin = function(desiredCoinType, currentCoin, currentCoinType) {
-		var coinRate = config.get("coin." + currentCoinType + "." + desiredCoinType + ".rate");
-		return (currentCoin * coinRate);
+	var calculateCoin = function(toCoinType, fromCoinAmount, fromCoinType) {
+		var coinRate = config.get("coin." + fromCoinType + "." + toCoinType + ".rate");
+		return (fromCoinAmount * coinRate);
 	}
 
-	var calculateModCoin = function(desiredCoinType, currentCoin, currentCoinType) {
-		var denominator = getDenominatorFromRate(config.get("coin." + currentCoinType + "." + desiredCoinType + ".label"));
-		return (currentCoin % denominator);
+	var calculateModCoin = function(toCoinType, fromCoinAmount, fromCoinType) {
+		var denominator = getDenominatorFromRate(config.get("coin." + fromCoinType + "." + toCoinType + ".label"));
+		return (fromCoinAmount % denominator);
 	}
 
-	var exchange = function (currentCoinCount, currentCoinType, conversion) {
-		var remainingCoins = currentCoinCount;
+	var exchange = function (fromCoinAmount, fromCoinType, resultCoins) {
+		var remainingCoins = fromCoinAmount;
 		for (var highestCoinType in config.get("coin")) {
 			//If we're converting to the same coin type (i.e. cp to cp), then ignore calculations and just store it
-			if ((currentCoinType === highestCoinType)) {
-				conversion[currentCoinType] += remainingCoins;
+			if ((fromCoinType === highestCoinType)) {
+				resultCoins[fromCoinType] += remainingCoins;
 				return;
 			}
 
 			//Convert to a higher coin type, if possible
-			var quotient = Math.floor(calculateCoin(highestCoinType, remainingCoins, currentCoinType));
-			remainingCoins = calculateModCoin(highestCoinType, remainingCoins, currentCoinType);
-			conversion[highestCoinType] += quotient;
+			var quotient = Math.floor(calculateCoin(highestCoinType, remainingCoins, fromCoinType));
+			remainingCoins = calculateModCoin(highestCoinType, remainingCoins, fromCoinType);
+			resultCoins[highestCoinType] += quotient;
 		}
 	};
 
-	var optimalExchange = function (cpCount, spCount, epCount, gpCount, ppCount) {
+	var optimalExchange = function (coinOpts) {
 		//1. Init the base coin conversions to 0
-		var conversion = {};
+		var results = {};
 		for (var key in config.get("coin")) {
-			conversion[key] = 0;
+			results[key] = 0;
 		}
 
-		if (isInt(cpCount) && cpCount > 0) {
-			exchange(parseInt(cpCount), "cp", conversion);
-		}
-		if (isInt(spCount) && spCount > 0) {
-			exchange(parseInt(spCount), "sp", conversion);
-		}
-		if (isInt(epCount) && epCount > 0) {
-			exchange(parseInt(epCount), "ep", conversion);
-		}
-		if (isInt(gpCount) && gpCount > 0) {
-			exchange(parseInt(gpCount), "gp", conversion);
-		}
-		if (isInt(ppCount) && ppCount > 0) {
-			exchange(parseInt(ppCount), "pp", conversion);
+		//2. Convert the coins
+		for (var coin in coinOpts) {
+			if (isInt(coinOpts[coin]) && coinOpts[coin] > 0) {
+				exchange(parseInt(coinOpts[coin]), coin, results);
+			}
 		}
 		
-		return conversion;
+		return results;
+	};
+
+	var teamSplit = function(partyMemCount, coinOpts) {
+		if (isInt(partyMemCount) && partyMemCount <= 1) {
+			return [optimalExchange(coinOpts)];
+		} 
+
+		//Init the coins by member
+		var coinsByMember = [];
+		for (var i=0; i<partyMemCount; i++) {
+			coinsByMember.push({});
+		}
+
+		var results = coinOpts;
+
+		//The config file is in order from greatest to least
+		var remainingCoinAmount = 0;
+		var remainingCoinType = null;
+		for (var coin in config.get("coin")) {
+			if (!results.hasOwnProperty(coin)) {
+				results[coin] = 0;
+			}
+
+			//Take any remaining coins and either 
+			//A. exchange it to a lower coin value or
+			//B. add any remaining coppers for further processing
+			if (remainingCoinAmount > 0) {
+				if (coin !== remainingCoinType) {
+					var convertedValue = calculateCoin(coin, remainingCoinAmount, remainingCoinType);
+					results[coin] += convertedValue;
+				} else if (coin === "cp") {
+					results[coin] += remainingCoinAmount; 
+				}
+			}
+
+			//Get the coins that evenly distribute
+			var evenCoins = Math.floor(results[coin] / partyMemCount);
+
+			//Get the coins that don't
+			remainingCoinAmount = results[coin] % partyMemCount;
+			remainingCoinType = coin;
+
+			//Set those coins that evenly distribute
+			for (var i=0; i<partyMemCount; i++) {
+				coinsByMember[i][coin] = evenCoins;
+			}
+
+			//Set any remaining coins that don't
+			if (remainingCoinType === "cp" && remainingCoinAmount > 0) {
+				for (var i=0; i<remainingCoinAmount; i++) {
+					coinsByMember[i][remainingCoinType] += 1;
+				}
+			}
+		}
+		return coinsByMember;
 	};
   
 	return {
-    	optimalExchange : optimalExchange
-  	};
+  	optimalExchange : optimalExchange,
+  	teamSplit : teamSplit
+	};
 
 })();
 
