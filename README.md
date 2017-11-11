@@ -5,7 +5,13 @@ See a working example http://dnd-exchange-rate.herokuapp.com/
 
 ## Getting started
 1. `npm install`
-2. `npm start`
+
+## Bundling js scripts
+1. `grunt`
 
 ## Running tests
 1. `npm test`
+
+## Run site locally
+1. `bundle install`
+2. `bundle exec jekyll serve`

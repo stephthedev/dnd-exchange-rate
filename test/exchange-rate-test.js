@@ -1,6 +1,6 @@
 var assert = require('assert');
 var config = require("config");
-var ER = require('../modules/exchange-rate.js');
+var ER = require('../src/exchange-rate.js');
 
 describe("Undefined coin", function() {
 

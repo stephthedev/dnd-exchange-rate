@@ -15,18 +15,18 @@ var ExchangeRate = (function () {
 	}
 
 	var calculateCoin = function(toCoinType, fromCoinAmount, fromCoinType) {
-		var coinRate = config.get("coin." + fromCoinType + "." + toCoinType + ".rate");
+		var coinRate = config.get("Client.coin." + fromCoinType + "." + toCoinType + ".rate");
 		return (fromCoinAmount * coinRate);
 	}
 
 	var calculateModCoin = function(toCoinType, fromCoinAmount, fromCoinType) {
-		var denominator = getDenominatorFromRate(config.get("coin." + fromCoinType + "." + toCoinType + ".label"));
+		var denominator = getDenominatorFromRate(config.get("Client.coin." + fromCoinType + "." + toCoinType + ".label"));
 		return (fromCoinAmount % denominator);
 	}
 
 	var exchange = function (fromCoinAmount, fromCoinType, resultCoins) {
 		var remainingCoins = fromCoinAmount;
-		for (var highestCoinType in config.get("coin")) {
+		for (var highestCoinType in config.get("Client.coin")) {
 			//If we're converting to the same coin type (i.e. cp to cp), then ignore calculations and just store it
 			if ((fromCoinType === highestCoinType)) {
 				resultCoins[fromCoinType] += remainingCoins;
@@ -43,7 +43,7 @@ var ExchangeRate = (function () {
 	var optimalExchange = function (coinOpts) {
 		//1. Init the base coin conversions to 0
 		var results = {};
-		for (var key in config.get("coin")) {
+		for (var key in config.get("Client.coin")) {
 			results[key] = 0;
 		}
 
@@ -73,7 +73,7 @@ var ExchangeRate = (function () {
 		//The config file is in order from greatest to least
 		var remainingCoinAmount = 0;
 		var remainingCoinType = null;
-		for (var coin in config.get("coin")) {
+		for (var coin in config.get("Client.coin")) {
 			if (!results.hasOwnProperty(coin)) {
 				results[coin] = 0;
 			}

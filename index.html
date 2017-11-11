@@ -1,0 +1,88 @@
+---
+layout: default
+---
+
+<div class="container m-2">
+    <div class="row m-2">
+        <div class="col-lg-12">
+            <div id="result" class="alert alert-info invisible"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <form class="form-horizontal mx-4" onsubmit="return calculate();">
+                <div class="form-group row">
+                    <label class="col-sm-3">Copper</label>
+                    <input class="form-control col-sm-9" type="number" id="cp" name="cp"></input>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3">Silver</label>
+                    <input class="form-control col-sm-9" type="number" id="sp" name="sp"></input>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3">Electrum</label>
+                    <input class="form-control col-sm-9" type="number" id="ep" name="ep"></input>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3">Gold</label>
+                    <input class="form-control col-sm-9" type="number" id="gp" name="gp"></input>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3">Platinum</label>
+                    <input class="form-control col-sm-9" type="number" id="pp" name="pp"></input>
+                </div>
+
+                <button class="btn btn-primary" type="submit">Optimize</button>
+            </form>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Instructions</div>
+                <div class="card-body">TBD</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        TBD: Include exchange table
+    </div>
+
+    <script type="text/javascript">
+        function calculate() {
+            //1. Get the coin values from the form
+            var cp = document.getElementById("cp").value;
+            var sp = document.getElementById("sp").value;
+            var ep = document.getElementById("ep").value;
+            var gp = document.getElementById("gp").value;
+            var pp = document.getElementById("pp").value;
+
+            //2. Get the optimal results
+            var results = ExchangeRate.optimalExchange({
+                cp: cp,
+                sp: sp,
+                ep: ep,
+                gp: gp,
+                pp: pp
+            });
+
+            //3. Create a human-readable string showcasing the results
+            var result = "";
+            for (var key in results) {
+                if (results[key] > 0) {
+                    result = result.concat(results[key] + key + " ");
+                }
+            }
+
+            var resultDiv = document.getElementById("result");
+            resultDiv.innerText = result;
+            resultDiv.classList.remove("invisible");
+            return false;
+        }
+    </script>
+</div>

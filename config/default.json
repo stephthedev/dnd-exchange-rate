@@ -1,113 +1,115 @@
 {
-	"coin" : {
-		"pp" : {
-			"cp" : { 
-				"rate" : 1000,
-				"label" : "1000"
-			},
-			"sp" : { 
-				"rate" : 100,
-				"label" : "100"
-			},
-			"ep" : { 
-				"rate" : 20,
-				"label" : "20"
-			},
-			"gp" : { 
-				"rate" : 10,
-				"label" : "10"
-			},
-			"pp" : { 
-				"rate" : 1,
-				"label" : "1"
-			}
-		},
-		"gp" : {
-			"cp" : { 
-				"rate" : 100,
-				"label" : "100"
-			},
-			"sp" : { 
-				"rate" : 10,
-				"label" : "10"
-			},
-			"ep" : { 
-				"rate" : 2,
-				"label" : "2"
-			},
-			"gp" : { 
-				"rate" : 1,
-				"label" : "1"
-			},
-			"pp" : { 
-				"rate" : 0.1,
-				"label" : "1/10"
-			}
-		},
-		"ep" : {
-			"cp" : {
-				"rate" : 50,
-				"label" : "50"
-			},
-			"sp" : { 
-				"rate" : 5,
-				"label" : "5"
-			},
-			"ep" : { 
-				"rate" : 1,
-				"label" : "1"
-			},
-			"gp" : { 
-				"rate" : 0.5,
-				"label" : "1/2"
-			},
-			"pp" : { 
-				"rate" : 0.05,
-				"label" : "1/20"
-			}
-		},
-		"sp" : {
-			"cp" : {
-				"rate" : 10,
-				"label" : "10"
-			},
-			"sp" : {
-				"rate" : 1,
-				"label" : "1"
-			},
-			"ep" : {
-				"rate" : 0.2,
-				"label" : "1/5"
+	"Client" : {
+		"coin" : {
+			"pp" : {
+				"cp" : { 
+					"rate" : 1000,
+					"label" : "1000"
+				},
+				"sp" : { 
+					"rate" : 100,
+					"label" : "100"
+				},
+				"ep" : { 
+					"rate" : 20,
+					"label" : "20"
+				},
+				"gp" : { 
+					"rate" : 10,
+					"label" : "10"
+				},
+				"pp" : { 
+					"rate" : 1,
+					"label" : "1"
+				}
 			},
 			"gp" : {
-				"rate" : 0.1,
-				"label" : "1/10"
-			},
-			"pp" : {
-				"rate" : 0.01,
-				"label" : "1/100"
-			}
-		},
-		"cp" : {
-			"cp" : {
-				"rate" : 1,
-				"label" : "1"
-			},
-			"sp" : {
-				"rate" : 0.1,
-				"label" : "1/10"
+				"cp" : { 
+					"rate" : 100,
+					"label" : "100"
+				},
+				"sp" : { 
+					"rate" : 10,
+					"label" : "10"
+				},
+				"ep" : { 
+					"rate" : 2,
+					"label" : "2"
+				},
+				"gp" : { 
+					"rate" : 1,
+					"label" : "1"
+				},
+				"pp" : { 
+					"rate" : 0.1,
+					"label" : "1/10"
+				}
 			},
 			"ep" : {
-				"rate" : 0.02,
-				"label" : "1/50"
+				"cp" : {
+					"rate" : 50,
+					"label" : "50"
+				},
+				"sp" : { 
+					"rate" : 5,
+					"label" : "5"
+				},
+				"ep" : { 
+					"rate" : 1,
+					"label" : "1"
+				},
+				"gp" : { 
+					"rate" : 0.5,
+					"label" : "1/2"
+				},
+				"pp" : { 
+					"rate" : 0.05,
+					"label" : "1/20"
+				}
 			},
-			"gp" : {
-				"rate" : 0.01,
-				"label" : "1/100"
+			"sp" : {
+				"cp" : {
+					"rate" : 10,
+					"label" : "10"
+				},
+				"sp" : {
+					"rate" : 1,
+					"label" : "1"
+				},
+				"ep" : {
+					"rate" : 0.2,
+					"label" : "1/5"
+				},
+				"gp" : {
+					"rate" : 0.1,
+					"label" : "1/10"
+				},
+				"pp" : {
+					"rate" : 0.01,
+					"label" : "1/100"
+				}
 			},
-			"pp" : {
-				"rate" : 0.001,
-				"label" : "1/1000"
+			"cp" : {
+				"cp" : {
+					"rate" : 1,
+					"label" : "1"
+				},
+				"sp" : {
+					"rate" : 0.1,
+					"label" : "1/10"
+				},
+				"ep" : {
+					"rate" : 0.02,
+					"label" : "1/50"
+				},
+				"gp" : {
+					"rate" : 0.01,
+					"label" : "1/100"
+				},
+				"pp" : {
+					"rate" : 0.001,
+					"label" : "1/1000"
+				}
 			}
 		}
 	}
