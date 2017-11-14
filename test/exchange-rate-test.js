@@ -71,6 +71,17 @@ describe("Optimally exchange", function() {
         pp: 5
       });
     });
+
+    it("to only cp", function() {
+      var results = ER.optimalExchange({ep: 3}, ["cp"]);
+      assert.deepEqual(results, {
+        cp: 150, 
+        sp: 0,
+        ep: 0, 
+        gp: 0, 
+        pp: 0
+      });
+    });
   });
 
   describe("gp", function() {
@@ -95,6 +106,17 @@ describe("Optimally exchange", function() {
         ep: 0, 
         gp: 0, 
         pp: 621
+      });
+    });
+
+    it("to only gp", function() {
+      var results = ER.optimalExchange({pp: 25}, ["gp"]);
+      assert.deepEqual(results, {
+        cp: 0, 
+        sp: 0, 
+        ep: 0, 
+        gp: 250, 
+        pp: 0
       });
     });
   });

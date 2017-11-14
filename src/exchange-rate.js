@@ -36,9 +36,14 @@ var ExchangeRate = (function () {
 		return (fromCoinAmount % denominator);
 	}
 
-	var exchange = function (fromCoinAmount, fromCoinType, resultCoins) {
+	var exchange = function (fromCoinAmount, fromCoinType, resultCoins, desiredCoins) {
 		var remainingCoins = fromCoinAmount;
 		for (var highestCoinType in config.get("Client.coin")) {
+			if (desiredCoins.length > 0 && desiredCoins.indexOf(highestCoinType) == -1) {
+				//This is not a desired coin
+				continue;
+			}
+
 			//If we're converting to the same coin type (i.e. cp to cp), then ignore calculations and just store it
 			if ((fromCoinType === highestCoinType)) {
 				resultCoins[fromCoinType] += remainingCoins;
@@ -52,24 +57,34 @@ var ExchangeRate = (function () {
 		}
 	};
 
-	var optimalExchange = function (coins) {
+	var optimalExchange = function (coins, desiredCoins) {
+		if (desiredCoins == null || desiredCoins == undefined) {
+			desiredCoins = [];
+		}
+
 		//1. Init the base coin conversions to 0
 		var results = {};
 		for (var key in config.get("Client.coin")) {
 			results[key] = 0;
 		}
 
+		var scrubbedCoins = scrubCoins(coins);
+
 		//2. Convert the coins
-		for (var coin in coins) {
-			if (isInt(coins[coin]) && coins[coin] > 0) {
-				exchange(parseInt(coins[coin]), coin, results);
+		for (var coin in scrubbedCoins) {
+			if (scrubbedCoins[coin] > 0) {
+				exchange(scrubbedCoins[coin], coin, results, desiredCoins);
 			}
 		}
 		
 		return results;
 	};
 
-	var teamSplit = function(partyMemCount, coins) {
+	var teamSplit = function(partyMemCount, coins, desiredCoins) {
+		if (desiredCoins == null || desiredCoins == undefined) {
+			desiredCoins = [];
+		}
+
 		if (isInt(partyMemCount) && partyMemCount <= 1) {
 			return [optimalExchange(coins)];
 		} 
@@ -122,7 +137,7 @@ var ExchangeRate = (function () {
 
 		//Optimize the remaining values
 		for (var i=0; i<coinsByMember.length; i++) {
-			coinsByMember[i] = optimalExchange(coinsByMember[i]);
+			coinsByMember[i] = optimalExchange(coinsByMember[i], desiredCoins);
 		}
 		return coinsByMember;
 	};
