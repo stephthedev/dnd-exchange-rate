@@ -97,9 +97,19 @@ layout: default
             var result = "";
             if (partySize > -1) {
                 var results = ExchangeRate.teamSplit(partySize, coins, coinOpts);
-                result = "<ul>"
+                var strResults = {};
                 for (var i=0; i<results.length; i++) {
-                    result = result.concat("<li>", toCoinStr(results[i]), "</li>");
+                    var coinStr = toCoinStr(results[i]);
+                    if (strResults.hasOwnProperty(coinStr)) {
+                        strResults[coinStr] += 1;
+                    } else {
+                        strResults[coinStr] = 1;
+                    }
+                }
+
+                result = "<ul>"
+                for (var key in strResults) {
+                    result = result.concat("<li>", "(", strResults[key], ") ", key, "</li>");
                 }
                 result = result.concat("</ul>");
             } else {
