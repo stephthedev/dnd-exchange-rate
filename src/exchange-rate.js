@@ -5,16 +5,16 @@ var ExchangeRate = (function () {
   		return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
 	};
 
-	var scrubCoinOpts = function(coinOpts) {
-		var scrubbedCoinOpts = {};
-		for (var coin in coinOpts) {
-			if (isInt(coinOpts[coin])) {
-				scrubbedCoinOpts[coin] = parseInt(coinOpts[coin]);
+	var scrubCoins = function(coins) {
+		var scrubbedCoins = {};
+		for (var coin in config.get("Client.coin")) {
+			if (isInt(coins[coin])) {
+				scrubbedCoins[coin] = parseInt(coins[coin]);
 			} else {
-				scrubbedCoinOpts[coin] = 0;
+				scrubbedCoins[coin] = 0;
 			}
 		}
-		return scrubbedCoinOpts;
+		return scrubbedCoins;
 	}
 
 	var getDenominatorFromRate = function(label) {
@@ -52,7 +52,7 @@ var ExchangeRate = (function () {
 		}
 	};
 
-	var optimalExchange = function (coinOpts) {
+	var optimalExchange = function (coins) {
 		//1. Init the base coin conversions to 0
 		var results = {};
 		for (var key in config.get("Client.coin")) {
@@ -60,18 +60,18 @@ var ExchangeRate = (function () {
 		}
 
 		//2. Convert the coins
-		for (var coin in coinOpts) {
-			if (isInt(coinOpts[coin]) && coinOpts[coin] > 0) {
-				exchange(parseInt(coinOpts[coin]), coin, results);
+		for (var coin in coins) {
+			if (isInt(coins[coin]) && coins[coin] > 0) {
+				exchange(parseInt(coins[coin]), coin, results);
 			}
 		}
 		
 		return results;
 	};
 
-	var teamSplit = function(partyMemCount, coinOpts) {
+	var teamSplit = function(partyMemCount, coins) {
 		if (isInt(partyMemCount) && partyMemCount <= 1) {
-			return [optimalExchange(coinOpts)];
+			return [optimalExchange(coins)];
 		} 
 
 		//1. Create a collection of all-zero results for all party members
@@ -85,7 +85,7 @@ var ExchangeRate = (function () {
 		}
 
 		//2. Scrub the coins so that it's all numbers
-		var scrubbedCoinOpts = scrubCoinOpts(coinOpts);
+		var scrubbedCoins = scrubCoins(coins);
 
 		var remainingCoinAmount = 0;
 		var remainingCoinType = null;
@@ -95,21 +95,21 @@ var ExchangeRate = (function () {
 			//B. add any remaining coppers for further processing
 			if (remainingCoinAmount > 0) {
 				if (remainingCoinType === "cp") {
-					scrubbedCoinOpts[coin] += remainingCoinAmount;
+					scrubbedCoins[coin] += remainingCoinAmount;
 				} else if (coin !== remainingCoinType) {
 					var convertedValue = calculateCoin(coin, remainingCoinAmount, remainingCoinType);
-					scrubbedCoinOpts[coin] += convertedValue;
+					scrubbedCoins[coin] += convertedValue;
 				}
 			}
 
 			//Get the coins that evenly distribute and it to the results list
-			var wholeCoins = Math.floor(scrubbedCoinOpts[coin] / partyMemCount);
+			var wholeCoins = Math.floor(scrubbedCoins[coin] / partyMemCount);
 			for (var i=0; i<partyMemCount; i++) {
 				coinsByMember[i][coin] += wholeCoins;
 			}
 
 			//Get the leftover coins that don't evenly distribute
-			remainingCoinAmount = scrubbedCoinOpts[coin] % partyMemCount;
+			remainingCoinAmount = scrubbedCoins[coin] % partyMemCount;
 			remainingCoinType = coin;
 
 			//Add any remaining coppers that don't evenly distribute
