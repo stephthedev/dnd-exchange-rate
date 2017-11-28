@@ -1,7 +1,7 @@
 # dnd-exchange-rate
 
 A web-app calculator to optimally exchange coins in Dungeons and Dragons (5e). 
-See a working example http://dnd-exchange-rate.herokuapp.com/
+See a working calculator [here](http://stephthedev.com/dnd-exchange-rate/).
 
 ## Getting started
 1. `npm install`
