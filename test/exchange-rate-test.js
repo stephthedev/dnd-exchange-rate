@@ -157,4 +157,25 @@ describe("Team split", function() {
       assert.equal(1, results[i].ep);
     }
   });
+
+  it("where there are not enough coins to distribute to the party", function() {
+    var results = ER.teamSplit(4, {cp: 2});
+    assert.equal(results.length, 4);  //2 players get 1cp, 2 players get 0 coins
+    for (var i=0; i<results.length; i++) {
+      if (results[i].cp > 0) {
+        assert.equal(1, results[i].cp);
+        assert.equal(0, results[i].sp);
+        assert.equal(0, results[i].ep);
+        assert.equal(0, results[i].gp);
+        assert.equal(0, results[i].pp);
+      } else {
+        assert.equal(0, results[i].cp);
+        assert.equal(0, results[i].sp);
+        assert.equal(0, results[i].ep);
+        assert.equal(0, results[i].gp);
+        assert.equal(0, results[i].pp);
+      }
+      
+    }
+  });
 });

@@ -79,6 +79,11 @@ layout: default
                     str = str.concat(results[key] + key + " ");
                 }
             }
+
+            //No coins at all
+            if (str.length == 0) {
+                str = "No coins ";
+            }
             return str;
         }
 
