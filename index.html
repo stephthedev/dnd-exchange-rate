@@ -4,7 +4,11 @@ layout: default
 
 <div class="container">
     <div class="row mt-2">
-        <div class="col-lg-6 mb-2">
+        <div class="col-md-3">
+            {% include instructions.html %}
+        </div>
+
+        <div class="col-md-6">
             <form class="form-horizontal" onsubmit="return calculate();" onkeyup="return calculate();">
                 <div class="form-group mr-1">
                     <label for="id">Copper</label>
@@ -47,17 +51,11 @@ layout: default
             </form>
         </div>
 
-        <div class="col-lg-6 align-self-center">
+        <div class="col-md-3 align-self-center">
             <div id="result" class="alert alert-info invisible">
                 <h5>Results</h5>
                 <span id="placeholder"></span>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            {% include instructions.html %}
         </div>
     </div>
 
