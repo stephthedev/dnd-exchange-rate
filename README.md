@@ -1,17 +1,19 @@
 # dnd-exchange-rate
 
-A web-app calculator to optimally exchange coins in Dungeons and Dragons (5e). 
+A small javascript library to convert coins from Dungeons and Dragons 5e. 
 See a working calculator [here](http://stephthedev.com/dnd-exchange-rate/).
 
-## Getting started
-1. `npm install`
+## Overview
+This library does two things:
+* Converts lower value coins to higher value coins (i.e. coppers and silvers to gold)
+* Evenly splits coins amongst a defined party size (i.e. (23 cp, 35 sp, 58 ep) split between 4 heroes)
 
-## Bundling js scripts
-1. `grunt`
+## Building it
+* `npm install`
+* `npm test`	# Run tests
+* `grunt`	# Bundle js scripts to dist/ directory
 
-## Running tests
-1. `npm test`
 
-## Run site locally
-1. `bundle install`
-2. `bundle exec jekyll serve`
+## Running it
+Coming soon!
+
