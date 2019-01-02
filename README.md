@@ -3,6 +3,8 @@
 A small javascript library to convert coins from Dungeons and Dragons 5e. 
 See a working calculator [here](http://stephthedev.com/dnd-exchange-rate/).
 
+[![CircleCI](https://circleci.com/gh/stephthedev/dnd-exchange-rate/tree/master.svg?style=svg)](https://circleci.com/gh/stephthedev/dnd-exchange-rate/tree/master)
+
 ## Overview
 This library does two things:
 * Converts lower value coins to higher value coins (i.e. coppers and silvers to gold)
