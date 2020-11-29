@@ -1,8 +1,8 @@
 {
   "name": "dnd-exchange-rate",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "dungeons and dragons 5e coin conversion calculator",
-  "main": "src/index.js",
+  "main": "dist/bundle.min.js",
   "keywords": [
     "d&d",
     "5e",
