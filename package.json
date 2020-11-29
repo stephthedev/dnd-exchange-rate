@@ -2,7 +2,7 @@
   "name": "dnd-exchange-rate",
   "version": "0.0.1",
   "description": "dungeons and dragons 5e coin conversion calculator",
-  "keywords": ["d&d", "5e", "coin", "convert", "exchange", "rate", "calculator"]
+  "keywords": ["d&d", "5e", "coin", "convert", "exchange", "rate", "calculator"],
   "main": "app.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha test"
