@@ -1,7 +1,8 @@
 {
   "name": "dnd-exchange-rate",
   "version": "0.0.1",
-  "description": "dungeons and dragons 5e exchange rate calculator",
+  "description": "dungeons and dragons 5e coin conversion calculator",
+  "keywords": ["d&d", "5e", "coin", "convert", "exchange", "rate", "calculator"],
   "main": "app.js",
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha test"
@@ -17,15 +18,9 @@
   },
   "homepage": "https://github.com/stephthedev/dnd-exchange-rate#readme",
   "devDependencies": {
-    "browserify": "^14.5.0",
-    "config-browserify": "^1.0.5",
-    "grunt": "^1.0.4",
-    "grunt-browserify": "^5.3.0",
-    "grunt-cli": "^1.2.0",
-    "grunt-contrib-uglify": "^3.1.0",
-    "mocha": "^4.0.1"
+    "mocha": "8.2.1"
   },
   "dependencies": {
-    "config": "^1.27.0"
+    "config": "3.3.3"
   }
 }

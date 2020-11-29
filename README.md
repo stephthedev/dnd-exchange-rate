@@ -13,8 +13,6 @@ This library does two things:
 ## Building it
 * `npm install`
 * `npm test`	# Run tests
-* `grunt`	# Bundle js scripts to dist/ directory
-
 
 ## Running it
 ### Setup
